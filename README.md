@@ -92,8 +92,9 @@ Add image files under `assets/certificates/`, then add real entries to `window.G
 
 ## Public GitHub data
 
-- Contribution history comes from `github-contributions-api.jogruber.de` and is cached for one hour.
+- Contribution history comes from `github-contributions-api.jogruber.de` and is cached for ten minutes.
 - Public activity comes from the GitHub Events API and is cached for five minutes.
 - Repository listings and project insights are cached for 15 minutes.
+- While the home page is open, it refreshes activity about every six minutes and contributions about every eleven minutes. It also checks for updates when the page becomes visible again.
 
-These are public unauthenticated API requests. If GitHub's rate limit is reached, wait for the cache/rate-limit window to pass or visit your GitHub profile directly.
+These are public unauthenticated API requests; the activity feed shows public GitHub activity only. GitHub and the contribution-data provider may take time to publish new changes, and rate limits can delay updates.

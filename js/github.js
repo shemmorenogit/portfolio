@@ -28,7 +28,7 @@
 
   const username = () => (window.PORTFOLIO_CONFIG || {}).githubUsername || "shemmorenogit";
   const ttl = {
-    contribution: 60 * 60 * 1000,
+    contribution: 10 * 60 * 1000,
     events: 5 * 60 * 1000,
     repositories: 15 * 60 * 1000,
     repositoryDetails: 15 * 60 * 1000

@@ -3,11 +3,24 @@
   const username = config.githubUsername || "shemmorenogit";
   const githubProfile = `https://github.com/${encodeURIComponent(username)}`;
   let contributionRequest = 0;
+  let displayedContributionYear = null;
+  let hasActivityData = false;
 
   loadContributions();
   loadActivity();
   loadHomeProjects();
   loadHomeGallery();
+  window.setInterval(() => {
+    if (document.visibilityState === "visible") loadActivity();
+  }, 6 * 60 * 1000);
+  window.setInterval(() => {
+    if (document.visibilityState === "visible") loadContributions(getSelectedContributionYear());
+  }, 11 * 60 * 1000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    loadActivity();
+    loadContributions(getSelectedContributionYear());
+  });
 
   async function loadContributions(year) {
     const requestId = ++contributionRequest;
@@ -21,18 +34,27 @@
     if (!years.includes(selectedYear)) years.push(selectedYear);
     years.sort((left, right) => left - right);
 
-    picker.replaceChildren();
-    years.forEach((item) => {
-      const button = document.createElement("button");
-      button.className = "year-button";
-      button.type = "button";
-      button.textContent = String(item);
-      button.setAttribute("aria-pressed", String(item === selectedYear));
-      button.addEventListener("click", () => loadContributions(item));
-      picker.append(button);
+    const buttons = Array.from(picker.querySelectorAll(".year-button"));
+    const pickerNeedsUpdate = buttons.length !== years.length ||
+      buttons.some((button, index) => Number(button.textContent) !== years[index]);
+    if (pickerNeedsUpdate) {
+      picker.replaceChildren();
+      years.forEach((item) => {
+        const button = document.createElement("button");
+        button.className = "year-button";
+        button.type = "button";
+        button.textContent = String(item);
+        button.addEventListener("click", () => loadContributions(item));
+        picker.append(button);
+      });
+    }
+    picker.querySelectorAll(".year-button").forEach((button) => {
+      button.setAttribute("aria-pressed", String(Number(button.textContent) === selectedYear));
     });
 
-    total.textContent = `Loading ${selectedYear}…`;
+    const showingSelectedYear = displayedContributionYear === selectedYear;
+    const previousTotal = total.textContent;
+    if (!showingSelectedYear) total.textContent = `Loading ${selectedYear}…`;
     message.replaceChildren();
     try {
       const data = await window.PortfolioGitHub.getContributions(selectedYear);
@@ -45,13 +67,24 @@
           : days.reduce((sum, day) => sum + (Number(day.count) || 0), 0));
       total.textContent = `${totalCount.toLocaleString()} contributions in ${selectedYear}`;
       renderContributionGrid(days, selectedYear);
+      displayedContributionYear = selectedYear;
     } catch (error) {
       if (requestId !== contributionRequest) return;
       console.error("Could not load the GitHub contribution graph.", error);
+      if (showingSelectedYear) {
+        total.textContent = previousTotal;
+        addExternalMessage(message, "The latest contribution update is unavailable; showing the last update. View GitHub profile", githubProfile);
+        return;
+      }
       total.textContent = `Contributions in ${selectedYear}`;
       renderContributionGrid([], selectedYear);
       addExternalMessage(message, "The contribution graph is temporarily unavailable. View GitHub profile", githubProfile);
     }
+  }
+
+  function getSelectedContributionYear() {
+    const selected = document.querySelector("[data-year-picker] .year-button[aria-pressed='true']");
+    return selected ? Number(selected.textContent) : undefined;
   }
 
   function renderContributionGrid(days, year) {
@@ -105,11 +138,22 @@
 
   async function loadActivity() {
     const feed = document.querySelector("[data-activity-feed]");
+    const previousNotice = feed.querySelector("[data-refresh-notice]");
+    if (previousNotice) previousNotice.remove();
     try {
       const events = await window.PortfolioGitHub.getEvents();
       renderActivity(Array.isArray(events) ? events : []);
+      hasActivityData = true;
     } catch (error) {
       console.error("Could not load public GitHub activity.", error);
+      if (hasActivityData) {
+        const notice = document.createElement("p");
+        notice.className = "api-message";
+        notice.dataset.refreshNotice = "";
+        addExternalMessage(notice, "Could not refresh activity; showing the last update. View GitHub activity", `${githubProfile}?tab=activity`);
+        feed.append(notice);
+        return;
+      }
       feed.replaceChildren();
       addExternalMessage(feed, "Recent activity is temporarily unavailable. View GitHub activity", `${githubProfile}?tab=activity`);
     }
