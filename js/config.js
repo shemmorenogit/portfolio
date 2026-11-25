@@ -9,6 +9,6 @@ window.PORTFOLIO_CONFIG = {
     { label: "[FILL IN]", url: "[FILL IN]" }
   ],
   cvPath: "[FILL IN]",
-  contactHeadline: "Want me to build something for you? (Trust me, the price is good.)",
+  contactHeadline: "Need a website? Let's talk.",
   handle: "@shemmorenogit"
 };
