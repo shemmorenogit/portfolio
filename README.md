@@ -1,5 +1,7 @@
 # Shem Moreno — personal portfolio
 
+Live site: <https://portfolio-tau-one-x4w4xbv8ro.vercel.app>
+
 A small portfolio made with plain HTML, CSS, and JavaScript. It has no framework, package manager, build step, or backend. Open `index.html` directly in a browser, or use VS Code Live Server while working on it.
 
 ## What each file does
