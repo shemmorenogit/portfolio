@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="View the portfolio owner's CV and contact details.">
+  <meta property="og:title" content="CV — Portfolio">
+  <meta property="og:description" content="View the portfolio owner's CV and contact details.">
+  <meta property="og:type" content="website">
+  <title>CV — Portfolio</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div data-site-header></div>
+  <main class="cv-page page-width" id="main">
+    <a class="text-link" href="index.html"><span aria-hidden="true">←</span> Back to home</a>
+    <h1>My CV</h1>
+    <div class="cv-viewer surface" data-cv-viewer>
+      <p class="empty-message">CV coming soon.</p>
+    </div>
+    <div class="cv-actions">
+      <a class="button button--primary" data-cv-download href="#" hidden>Download CV</a>
+      <a class="button" data-call-button href="#" hidden>Call me</a>
+    </div>
+  </main>
+  <div data-site-footer></div>
+  <script src="js/config.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="data/gallery.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/github.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cv.js"></script>
+</body>
+</html>
