@@ -9,9 +9,6 @@
     headerHost.innerHTML = `
       <header class="site-header page-width">
         <a class="site-brand" href="index.html" aria-label="Home">${escapeText(name)}<span aria-hidden="true">.</span></a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
-          <span class="menu-toggle__text">Menu</span><span class="menu-toggle__icon" aria-hidden="true"><i></i><i></i></span>
-        </button>
         <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
           <a data-nav="projects" href="projects.html">Projects</a>
           <a data-nav="certificate" href="gallery.html?type=certificate">Certificates</a>
@@ -19,6 +16,14 @@
           <a data-nav="contacts" href="index.html#contacts">Contacts</a>
           <a class="mobile-profile-link" href="https://github.com/${encodeURIComponent(username)}" target="_blank" rel="noopener noreferrer">@${escapeText(username)} ↗</a>
         </nav>
+        <div class="site-header__controls">
+          <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <span class="theme-toggle__dot" aria-hidden="true"></span>
+          </button>
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+            <span class="menu-toggle__text">Menu</span><span class="menu-toggle__icon" aria-hidden="true"><i></i><i></i></span>
+          </button>
+        </div>
       </header>`;
 
     const page = window.location.pathname.split("/").pop() || "index.html";
@@ -51,6 +56,8 @@
 
     const toggle = headerHost.querySelector(".menu-toggle");
     const nav = headerHost.querySelector(".site-nav");
+    const themeToggle = headerHost.querySelector(".theme-toggle");
+    if (window.PortfolioTheme) window.PortfolioTheme.attach(themeToggle);
     const setMenu = (open) => {
       toggle.setAttribute("aria-expanded", String(open));
       nav.classList.toggle("is-open", open);

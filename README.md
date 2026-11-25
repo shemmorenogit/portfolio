@@ -21,6 +21,7 @@ A small portfolio made with plain HTML, CSS, and JavaScript. It has no framework
 - `css/style.css` — layout, colors, responsive styles, focus states, and gentle animations.
 - `js/config.js` — the personal details used throughout the pages. Edit this file first.
 - `js/layout.js` — inserts the shared navigation and footer.
+- `js/theme.js` — applies the saved light/dark theme and controls the animated navbar toggle.
 - `js/github.js` — fetches public GitHub data and caches it in the browser.
 - `js/main.js` — shared page setup, contact links, animation, and reusable card helpers.
 - `js/home.js` — contribution graph, recent activity, project preview, and scrolling gallery.
@@ -47,6 +48,8 @@ Edit `js/config.js`. Values still marked `[FILL IN]` are hidden instead of becom
 - `cvPath` — path to your CV, for example `assets/cv/my-cv.pdf`. Leave the placeholder until the file exists.
 
 The name, GitHub username, email, contact headline, and handle are also in that file. Keep phone numbers in international format for the WhatsApp link.
+
+The site starts in light mode. Use the circle in the navbar to switch themes; your choice is saved in that browser and follows you between pages.
 
 ## Run locally
 
